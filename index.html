@@ -94,6 +94,63 @@
     object-fit: cover; /* Esto asegura que la imagen llene toda el área */
     display: block;
 }
+
+    .top-left-buttons {
+      position: absolute;
+      bottom: 50px;
+      left: 10px;
+      z-index: 10000;
+      padding: 8px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background-color: transparent;
+    }
+
+ .top-left-buttons button {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 6px 12px;
+  cursor: pointer;
+  border: none;
+  background: linear-gradient(135deg, #8B4513, #4CAF50);
+  color: white;
+  border-radius: 6px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.top-left-buttons button:hover {
+  background: linear-gradient(135deg, #5C3317, #388E3C);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+    #overlayImage {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      display: none;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    #overlayImage img {
+      max-width: 90%;
+      max-height: 90%;
+      border: 4px solid #fff;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
         </style>
 
         <style>
@@ -120,6 +177,41 @@
   <label for="opacityRange">Transparencia de coberturas</label>
   <input type="range" id="opacityRange" min="0" max="1" step="0.1" value="1">
 </div>
+
+<div class="top-left-buttons">
+    <button id="toggleImageBtn">Mostrar Mapa Cartográfico</button>
+    <div id="buttonContainer" style="display: none; flex-direction: column; gap: 5px; margin-top: 10px;"></div>
+  </div>
+
+  <div id="overlayImage" style="display:none; position:fixed; top:0; left:0;
+    width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center;
+    justify-content:center; z-index:1000;">
+  <img id="reportImage" src="images/1.png" alt="Mapa" style="max-width:90%; max-height:90%;" />
+</div>
+<script>
+  const toggleBtn = document.getElementById('toggleImageBtn');
+  const overlayImage = document.getElementById('overlayImage');
+
+  // Toggle directo del overlay de imagen
+  toggleBtn.addEventListener('click', () => {
+    if (overlayImage.style.display === 'none' || overlayImage.style.display === '') {
+      overlayImage.style.display = 'flex';
+      toggleBtn.textContent = 'Ocultar Mapa Cartográfico';
+    } else {
+      overlayImage.style.display = 'none';
+      toggleBtn.textContent = 'Mostrar Mapa Cartográfico';
+    }
+  });
+
+  // Cerrar la imagen al hacer clic fuera de ella (en el overlay)
+  overlayImage.addEventListener('click', (event) => {
+    if (event.target === overlayImage) {
+      overlayImage.style.display = 'none';
+      toggleBtn.textContent = 'Mostrar Mapa Cartográfico';
+    }
+  });
+</script>
+
         <script src="resources/qgis2web_expressions.js"></script>
         <script src="./resources/functions.js"></script>
         <script src="./resources/ol.js"></script>
